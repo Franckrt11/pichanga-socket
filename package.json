@@ -1,0 +1,21 @@
+{
+  "name": "pichanga-socket",
+  "version": "1.0.0",
+  "description": "Chat server",
+  "license": "ISC",
+  "author": "Lauc1an",
+  "main": "index.js",
+  "scripts": {
+    "nuke": "npx rimraf node_modules package-lock.json",
+    "prod": "node index.js",
+    "sort-package": "npx sort-package-json",
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
