@@ -3,12 +3,19 @@ PassengerAppRoot "/home/dkugkrta/subdomain/socket"
 PassengerBaseURI "/"
 PassengerNodejs "/home/dkugkrta/nodevenv/subdomain/socket/18/bin/node"
 PassengerAppType node
-PassengerStartupFile loader.cjs
+PassengerStartupFile app.js
 # DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
-
+ProxyPreserveHost On
 RewriteEngine On
+
+# Upgrade connections to WebSockets
+RewriteCond %{HTTP:Upgrade} =websocket [NC]
+RewriteRule /(.*) ws://localhost:3000/$1 [P,L]
+
+# Redirect http to https
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+# Everything else forwards as HTTP to the node app.
+ProxyPass / http://127.0.0.1:3000/
+ProxyPassReverse / http://127.0.0.1:3000/
